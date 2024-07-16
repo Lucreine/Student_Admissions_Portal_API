@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/university', getAllUniversity);
 router.get('/university/:id', getUniversityById);
-router.post('/university',authenticateToken, authorizeRole(['university']), createUniversity);
+router.post('/university',authenticateToken, authorizeRole('university'), createUniversity);
 router.put('/university/:id', updateUniversity);
 router.delete('/university/:id', deleteUniversity);
 

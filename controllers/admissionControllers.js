@@ -1,4 +1,3 @@
-/ controllers/admissionController.js
 const admissionService = require('../services/admissionService');
 
 const createAdmission = async (req, res) => {
@@ -6,6 +5,15 @@ const createAdmission = async (req, res) => {
     const admissionData = req.body;
     const admission = await admissionService.createAdmission(admissionData);
     res.status(201).json(admission);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getAllAdmissions = async (req, res) => {
+  try {
+    const admissions = await admissionService.getAllAdmissions();
+    res.status(200).json(admissions);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -25,21 +33,12 @@ const getAdmissionById = async (req, res) => {
   }
 };
 
-const getAllAdmissions = async (req, res) => {
-  try {
-    const admissions = await admissionService.getAllAdmissions();
-    res.status(200).json(admissions);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
 const updateAdmission = async (req, res) => {
   try {
     const { id } = req.params;
     const admissionData = req.body;
-    const admission = await admissionService.updateAdmission(id, admissionData);
-    res.status(200).json(admission);
+    const updatedAdmission = await admissionService.updateAdmission(id, admissionData);
+    res.status(200).json(updatedAdmission);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -48,8 +47,8 @@ const updateAdmission = async (req, res) => {
 const deleteAdmission = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await admissionService.deleteAdmission(id);
-    res.status(200).json(result);
+    await admissionService.deleteAdmission(id);
+    res.status(204).json();
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -57,8 +56,8 @@ const deleteAdmission = async (req, res) => {
 
 module.exports = {
   createAdmission,
-  getAdmissionById,
   getAllAdmissions,
+  getAdmissionById,
   updateAdmission,
-  deleteAdmission,
+  deleteAdmission
 };

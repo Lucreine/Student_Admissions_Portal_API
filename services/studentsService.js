@@ -5,11 +5,22 @@ const usersModels = require('../models/usersModels');
 const getStudent= async () => {
     return await studentsModels.findAll({
         include: {
-            model: User,
+            model: usersModels,
             as: 'user'
         }
     });
 }
+
+
+const getStudentById = async (id) => {
+    return await studentsModels.findByPk(id, {
+        include: {
+            model: usersModels,
+            as: 'user'
+        }
+    });
+};
+
 
 const createStudent = async (studentData, userData) => {
     const users = await usersModels.create(userData);
@@ -56,5 +67,6 @@ module.exports = {
     getStudent,
     createStudent,
     updateStudent,
-    deleteStudent
+    deleteStudent,
+    getStudentById
 };

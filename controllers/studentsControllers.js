@@ -5,11 +5,25 @@ const bcrypt = require('bcrypt');
 const getStudent = async (req, res) => {
     try {
         const students = await studentsService.getStudent();
+        console.log(students);
         res.status(200).json({ message: "List of students", students });
     } catch (error) {
         res.status(500).json({ message: "Failed to retrieve students", error: error.message });
     }
 }
+
+const getStudentById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const student = await studentsService.getStudentById(id);
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found' });
+        }
+        res.status(200).json(student);
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to retrieve student', error: error.message });
+    }
+};
 
 const createStudent = async (req, res) => {
     const { email, password, firstname, lastname, address, phone_number, birthdate, sexe, country } = req.body;
@@ -31,6 +45,7 @@ const createStudent = async (req, res) => {
             country
         };
 
+        console.log(studentData);
         const { users, students } = await studentsService.createStudent(studentData, userData);
         res.status(201).json({ message: 'Student registered', users, students });
 
@@ -69,5 +84,6 @@ module.exports = {
     getStudent,
     createStudent,
     updateStudent,
-    deleteStudent
+    deleteStudent,
+    getStudentById
 };

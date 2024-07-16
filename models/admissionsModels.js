@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
-const Student = require('./studentModels');
+const Student = require('./studentsModels');
 const University = require('./universityModels');
 const Degree = require('./degreeModels');
 const Program = require('./programModels');
@@ -15,21 +15,23 @@ const Admission = sequelize.define('Admission', {
     allowNull: false,
   },
   status: {
-    type: DataTypes.ENUM('pending', 'accepted', 'rejected'),
+    type: DataTypes.BOOLEAN,
     allowNull: false,
-    defaultValue: 'pending',
+    defaultValue: false
   },
   average_score: {
     type: DataTypes.FLOAT,
     allowNull: true,
   },
-  card_url: {
+  card: {
     type: DataTypes.STRING,
     allowNull: true,
   },
 }, {
   tableName: 'admissions',
   timestamps: true,
+  updatedAt: 'updateTimestamp' 
+
 });
 
 Admission.belongsTo(Student, {
