@@ -7,6 +7,7 @@ const authRouter = require("./routers/auth.js");
 const courseRouter = require("./routers/coursesRouter");
 const degreeRouter = require("./routers/degreeRouter");
 const programRouter = require("./routers/programRouter");
+const programDegreeRouter = require("./routers/programDegreeRouter");
 
 
 const sequelize = require('./db');
@@ -31,6 +32,7 @@ app.use('/api', universityRouter);
 app.use('/api', courseRouter);
 app.use('/api', degreeRouter);
 app.use('/api', programRouter);
+app.use('/api', programDegreeRouter);
 
 
 
