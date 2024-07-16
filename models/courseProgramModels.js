@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
-const Course = require('./courseModels');
+const Course = require('./coursesModels');
 const Program = require('./programModels');
 
 const CourseProgram = sequelize.define('CourseProgram', {}, {

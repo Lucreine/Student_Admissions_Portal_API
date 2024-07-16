@@ -1,6 +1,6 @@
 const coursesModels = require('../models/coursesModels');
-const universityModels = require('../models/universityModels')
-const degreeModels = require('../models/degreeModels');  
+// const universityModels = require('../models/universityModels')
+// const degreeModels = require('../models/degreeModels');  
 const { get } = require('../routers/universityRouter');
 
 const createCourse = async (courseData) => {
