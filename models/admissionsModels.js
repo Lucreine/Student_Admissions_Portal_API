@@ -1,60 +1,55 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
-const Student = require('./studentsModels');
+const Student = require('./studentModels');
 const University = require('./universityModels');
 const Degree = require('./degreeModels');
+const Program = require('./programModels');
 
 const Admission = sequelize.define('Admission', {
   motivation_letter: {
     type: DataTypes.TEXT,
-    allowNull: true,
+    allowNull: false,
   },
   graduation_year: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
   status: {
-    type: DataTypes.STRING,
+    type: DataTypes.ENUM('pending', 'accepted', 'rejected'),
     allowNull: false,
+    defaultValue: 'pending',
   },
   average_score: {
     type: DataTypes.FLOAT,
-    allowNull: false,
+    allowNull: true,
   },
   card_url: {
     type: DataTypes.STRING,
     allowNull: true,
-  }
+  },
 }, {
   tableName: 'admissions',
   timestamps: true,
 });
 
-Student.hasMany(Admission, { 
-    foreignKey: 'student_id', 
-    as: 'admissions' 
-});
-Admission.belongsTo(Student, { 
-    foreignKey: 'student_id', 
-    as: 'student' 
+Admission.belongsTo(Student, {
+  foreignKey: 'student_id',
+  as: 'student',
 });
 
-University.hasMany(Admission, { 
-    foreignKey: 'university_id', 
-    as: 'admissions' 
-});
-Admission.belongsTo(University, { 
-    foreignKey: 'university_id', 
-    as: 'university' 
+Admission.belongsTo(University, {
+  foreignKey: 'university_id',
+  as: 'university',
 });
 
-Degree.hasMany(Admission, { 
-    foreignKey: 'degree_id', 
-    as: 'admissions' 
+Admission.belongsTo(Degree, {
+  foreignKey: 'degree_id',
+  as: 'degree',
 });
-Admission.belongsTo(Degree, { 
-    foreignKey: 'degree_id', 
-    as: 'degree' 
+
+Admission.belongsTo(Program, {
+  foreignKey: 'program_id',
+  as: 'program',
 });
 
 module.exports = Admission;
