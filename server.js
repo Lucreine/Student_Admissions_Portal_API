@@ -10,6 +10,7 @@ const programRouter = require("./routers/programRouter");
 const programDegreeRouter = require("./routers/programDegreeRouter");
 const courseProgramRouter = require("./routers/courseProgramRouter");
 const admissionRouter = require("./routers/admissionRouter");
+const courseStudentRouter = require("./routers/courseStudentRouter");
 
 
 const sequelize = require('./db');
@@ -37,6 +38,7 @@ app.use('/api', programRouter);
 app.use('/api', programDegreeRouter);
 app.use('/api', courseProgramRouter);
 app.use('/api', admissionRouter);
+app.use('/api', courseStudentRouter);
 
 
 
