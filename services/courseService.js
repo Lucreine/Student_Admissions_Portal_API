@@ -1,9 +1,16 @@
 const coursesModels = require('../models/coursesModels');
+const universityModels = require('../models/universityModels');
 
-const createCourse = async (courseData) => {
-    return await coursesModels.create(courseData);
+const createCourse = async (courseData, userId) => {
+  const university = await universityModels.findOne({ where: { userId } });
+    if (!university) {
+        throw new Error('University not found for the connected user');
+    }
+
+    const course = await coursesModels.create({ ...courseData, university_id: university.id });
+    return course;
   };
-  
+
 const getCourses = async () => {
     return await coursesModels.findAll({ include: ['university', 'degree'] });
   };

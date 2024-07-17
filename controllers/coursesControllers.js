@@ -3,7 +3,7 @@ const courseService = require('../services/courseService');
 const createCourse = async (req, res) => {
   try {
     const courseData = req.body;
-    const course = await courseService.createCourse(courseData);
+    const course = await courseService.createCourse(courseData, req.user.id);
     res.status(201).json(course);
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -1,6 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
-// const { Sequelize } = require('sequelize');
+const path = require('path');
 const studentRouter = require('./routers/studentsRouter');
 const universityRouter = require('./routers/universityRouter');
 const authRouter = require("./routers/auth.js");
@@ -39,6 +39,7 @@ app.use('/api', programDegreeRouter);
 app.use('/api', courseProgramRouter);
 app.use('/api', admissionRouter);
 app.use('/api', courseStudentRouter);
+// app.use('/uploads', express.static(path.join(__dirname, 'public')));
 
 
 

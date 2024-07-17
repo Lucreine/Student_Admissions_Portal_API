@@ -1,14 +1,26 @@
 const admissionService = require('../services/admissionService');
 
+
 const createAdmission = async (req, res) => {
+  const { motivation_letter, graduation_year, average_score, university_id, degree_id, program_id } = req.body;
+
   try {
-    const admissionData = req.body;
+    const admissionData = {
+      motivation_letter,
+      graduation_year,
+      average_score,
+      card: req.file ? req.file.path : null,
+      university_id,
+      degree_id,
+      program_id
+  };
     const admission = await admissionService.createAdmission(admissionData);
     res.status(201).json(admission);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 const getAllAdmissions = async (req, res) => {
   try {
@@ -18,6 +30,7 @@ const getAllAdmissions = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 const getAdmissionById = async (req, res) => {
   try {
@@ -33,31 +46,20 @@ const getAdmissionById = async (req, res) => {
   }
 };
 
-const updateAdmission = async (req, res) => {
+const updateAdmissionStatus = async (req, res) => {
   try {
-    const { id } = req.params;
-    const admissionData = req.body;
-    const updatedAdmission = await admissionService.updateAdmission(id, admissionData);
-    res.status(200).json(updatedAdmission);
+      const { id } = req.params;
+      const { status } = req.body;
+      const updatedAdmission = await admissionService.updateAdmissionStatus(id, status);
+      res.status(200).json(updatedAdmission);
   } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-const deleteAdmission = async (req, res) => {
-  try {
-    const { id } = req.params;
-    await admissionService.deleteAdmission(id);
-    res.status(204).json();
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message });
   }
 };
 
 module.exports = {
-  createAdmission,
-  getAllAdmissions,
-  getAdmissionById,
-  updateAdmission,
-  deleteAdmission
+    createAdmission,
+    getAllAdmissions,
+    getAdmissionById,
+    updateAdmissionStatus
 };

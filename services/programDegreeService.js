@@ -1,29 +1,48 @@
-const programDegreeModels = require('../models/programDegreeModels');
+const ProgramDegree = require('../models/programDegreeModels');
+const programModels = require('../models/programModels');
+const degreeModels = require('../models/degreeModels');
 
-const createProgramDegree = async (programDegreeData) => {
-  return await programDegreeModels.create(programDegreeData);
+const createProgramDegree = async (program_id, degree_id) => {
+    const program = await programModels.findByPk(program_id);
+    const degree = await degreeModels.findByPk(degree_id);
+
+    if (!program || !degree) {
+        throw new Error('Program or Degree not found');
+    }
+
+    await program.addDegree(degree);
+    return { message: 'Degree added to program successfully' };
 };
 
-const getProgramDegreeById = async (program_id, degree_id) => {
-  return await programDegreeModels.findOne({ where: { program_id, degree_id } });
-};
+const getProgramDegrees = async (program_id) => {
+    const program = await programModels.findByPk(program_id, {
+        include: {
+            model: degreeModels,
+            as: 'degrees'
+        }
+    });
 
-const getAllProgramDegrees = async () => {
-  return await programDegreeModels.findAll();
+    if (!program) {
+        throw new Error('Program not found');
+    }
+
+    return program.degrees;
 };
 
 const deleteProgramDegree = async (program_id, degree_id) => {
-  const programDegree = await programDegreeModels.findOne({ where: { program_id, degree_id } });
-  if (!programDegree) {
-    throw new Error('ProgramDegree not found');
-  }
-  await programDegree.destroy();
-  return { message: 'ProgramDegree deleted successfully' };
+    const program = await programModels.findByPk(program_id);
+    const degree = await degreeModels.findByPk(degree_id);
+
+    if (!program || !degree) {
+        throw new Error('Program or Degree not found');
+    }
+
+    await program.removeDegree(degree);
+    return { message: 'Degree removed from program successfully' };
 };
 
 module.exports = {
-  createProgramDegree,
-  getProgramDegreeById,
-  getAllProgramDegrees,
-  deleteProgramDegree,
+    createProgramDegree,
+    getProgramDegrees,
+    deleteProgramDegree
 };

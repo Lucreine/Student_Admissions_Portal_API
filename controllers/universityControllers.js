@@ -1,15 +1,16 @@
 const universityService = require('../services/universityService');
 const bcrypt = require('bcrypt');
+const upload = require('../middleware/upload');
 
 
 const createUniversity = async (req, res) => {
-    const { email, password, name, location, description, contactUniversity, logo, country } = req.body;
+    const { email, password, name, location, description, contactUniversity, country } = req.body;
 
     try {
         const userData = {
             email,
             password: await bcrypt.hash(password, 10),
-            role: 'university'
+            role: 'admin'
         };
 
         const universityData = {
@@ -17,7 +18,7 @@ const createUniversity = async (req, res) => {
             location,
             description,
             contactUniversity,
-            logo,
+            logo: req.file ? req.file.path : null,
             country
         };
 

@@ -4,10 +4,10 @@ const {createProgram, getProgramById, getAllPrograms, updateProgram, deleteProgr
 const { authenticateToken, authorizeRole } = require('../middleware/auth');
 
 
-router.post('/program', authenticateToken, authorizeRole('university'), createProgram);
+router.post('/program', authenticateToken, authorizeRole('admin'), createProgram);
 router.get('/program/:id', getProgramById);
-router.get('/program', authenticateToken, authorizeRole('university'), getAllPrograms);
-router.put('/program/:id', authenticateToken, authorizeRole('university'), updateProgram);
-router.delete('/program/:id', authenticateToken, authorizeRole('university'), deleteProgram);
+router.get('/program', authenticateToken, authorizeRole('admin'), getAllPrograms);
+router.put('/program/:id', authenticateToken, authorizeRole('admin'), updateProgram);
+router.delete('/program/:id', authenticateToken, authorizeRole('admin'), deleteProgram);
 
 module.exports = router;

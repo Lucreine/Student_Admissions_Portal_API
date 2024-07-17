@@ -1,51 +1,40 @@
 const courseProgramService = require('../services/courseProgramService');
 
 const createCourseProgram = async (req, res) => {
-  try {
-    const courseProgramData = req.body;
-    const courseProgram = await courseProgramService.createCourseProgram(courseProgramData);
-    res.status(201).json(courseProgram);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+    const { course_id, program_id } = req.body;
 
-const getCourseProgramById = async (req, res) => {
-  try {
-    const { course_id, program_id } = req.params;
-    const courseProgram = await courseProgramService.getCourseProgramById(course_id, program_id);
-    if (!courseProgram) {
-      res.status(404).json({ error: 'CourseProgram not found' });
-    } else {
-      res.status(200).json(courseProgram);
+    try {
+        const result = await courseProgramService.createCourseProgram(course_id, program_id);
+        res.status(201).json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
 };
 
-const getAllCoursePrograms = async (req, res) => {
-  try {
-    const coursePrograms = await courseProgramService.getAllCoursePrograms();
-    res.status(200).json(coursePrograms);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+const getCoursePrograms = async (req, res) => {
+    const { course_id } = req.params;
+
+    try {
+        const programs = await courseProgramService.getCoursePrograms(course_id);
+        res.status(200).json(programs);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 };
 
 const deleteCourseProgram = async (req, res) => {
-  try {
     const { course_id, program_id } = req.params;
-    const result = await courseProgramService.deleteCourseProgram(course_id, program_id);
-    res.status(200).json(result);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+
+    try {
+        const result = await courseProgramService.deleteCourseProgram(course_id, program_id);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 };
 
 module.exports = {
-  createCourseProgram,
-  getCourseProgramById,
-  getAllCoursePrograms,
-  deleteCourseProgram,
+    createCourseProgram,
+    getCoursePrograms,
+    deleteCourseProgram
 };

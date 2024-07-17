@@ -1,32 +1,30 @@
-const CourseStudent = require('../models/courseStudentModels');
-const Student = require('../models/studentsModels');
-const Course = require('../models/coursesModels');
+const courseStudentModels = require('../models/courseStudentModels');
+const studentsModels = require('../models/studentsModels');
+const courseModels = require('../models/coursesModels');
 
-const enrollStudentInCourse = async (courseStudentData) => {
-  return await CourseStudent.create(courseStudentData);
+
+const enrollStudentInCourse = async (course_id, student_id, date) => {
+  const enrollment = await courseStudentModels.create({ course_id: course_id, student_id: student_id, date });
+  return enrollment;
 };
 
-const getAllCourseEnrollments = async () => {
-  return await CourseStudent.findAll({
-    include: [
-      { model: Student, as: 'students' },
-      { model: Course, as: 'courses' }
-    ]
-  });
-};
 
-const getCourseEnrollmentById = async (student_id, course_id) => {
-  return await CourseStudent.findOne({
-    where: { student_id, course_id },
+const getAllCourseEnrollments = async (student_id) => {
+  const student = await studentsModels.findByPk(student_id, {
     include: [
-      { model: Student, as: 'students' },
-      { model: Course, as: 'courses' }
+      { model: courseModels, as: 'courses' }
     ]
   });
+
+  if (!student) {
+    throw new Error('Student not found');
+  }
+
+  return student.courses;
 };
 
 const updateCourseEnrollment = async (student_id, course_id, courseStudentData) => {
-  const courseStudent = await CourseStudent.findOne({
+  const courseStudent = await courseStudentModels.findOne({
     where: { student_id, course_id }
   });
   if (!courseStudent) {
@@ -36,7 +34,7 @@ const updateCourseEnrollment = async (student_id, course_id, courseStudentData) 
 };
 
 const deleteCourseEnrollment = async (student_id, course_id) => {
-  const courseStudent = await CourseStudent.findOne({
+  const courseStudent = await courseStudentModels.findOne({
     where: { student_id, course_id }
   });
   if (!courseStudent) {
@@ -45,10 +43,10 @@ const deleteCourseEnrollment = async (student_id, course_id) => {
   await courseStudent.destroy();
 };
 
+
 module.exports = {
   enrollStudentInCourse,
   getAllCourseEnrollments,
-  getCourseEnrollmentById,
   updateCourseEnrollment,
   deleteCourseEnrollment
 };

@@ -3,7 +3,7 @@ const programService = require('../services/programService');
 const createProgram = async (req, res) => {
   try {
     const programData = req.body;
-    const program = await programService.createProgram(programData);
+    const program = await programService.createProgram(programData, req.user.id);
     res.status(201).json(program);
   } catch (error) {
     res.status(500).json({ error: error.message });

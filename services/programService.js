@@ -1,7 +1,13 @@
 const programModels = require('../models/programModels');
+const universityModels = require('../models/universityModels');
 
-const createProgram = async (programData) => {
-  return await programModels.create(programData);
+const createProgram = async (programData, userId) => {
+  const university = await universityModels.findOne({ where: { userId } });
+  if (!university) {
+      throw new Error('University not found for the connected user');
+  }
+  const program = await programModels.create({ ...programData, university_id: university.id });
+    return program
 };
 
 const getProgramById = async (id) => {

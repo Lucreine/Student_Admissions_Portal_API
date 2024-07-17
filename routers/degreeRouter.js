@@ -4,10 +4,10 @@ const { authenticateToken, authorizeRole } = require('../middleware/auth');
 
 const router = express.Router();
 
-router.post('/degree', authenticateToken, authorizeRole('university'), createDegree);
+router.post('/degree', authenticateToken, authorizeRole('admin'), createDegree);
 router.get('/degree', getDegrees);
 router.get('/degree/:id', getDegreeById);
-router.put('/degree/:id', authenticateToken, authorizeRole(['university']), updateDegree);
-router.delete('/degree/:id', authenticateToken, authorizeRole(['university']), deleteDegree);
+router.put('/degree/:id', authenticateToken, authorizeRole('admin'), updateDegree);
+router.delete('/degree/:id', authenticateToken, authorizeRole('admin'), deleteDegree);
 
 module.exports = router;

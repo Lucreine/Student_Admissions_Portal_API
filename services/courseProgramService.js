@@ -1,29 +1,48 @@
 const CourseProgram = require('../models/courseProgramModels');
+const courseModels = require('../models/coursesModels');
+const programModels = require('../models/programModels');
 
-const createCourseProgram = async (courseProgramData) => {
-  return await CourseProgram.create(courseProgramData);
+const createCourseProgram = async (course_id, program_id) => {
+    const course = await courseModels.findByPk(course_id);
+    const program = await programModels.findByPk(program_id);
+
+    if (!course || !program) {
+        throw new Error('Course or Program not found');
+    }
+
+    await course.addProgram(program);
+    return { message: 'Program added to course successfully' };
 };
 
-const getCourseProgramById = async (course_id, program_id) => {
-  return await CourseProgram.findOne({ where: { course_id, program_id } });
-};
+const getCoursePrograms = async (course_id) => {
+    const course = await courseModels.findByPk(course_id, {
+        include: {
+            model: programModels,
+            as: 'programs'
+        }
+    });
 
-const getAllCoursePrograms = async () => {
-  return await CourseProgram.findAll();
+    if (!course) {
+        throw new Error('Course not found');
+    }
+
+    return course.programs;
 };
 
 const deleteCourseProgram = async (course_id, program_id) => {
-  const courseProgram = await CourseProgram.findOne({ where: { course_id, program_id } });
-  if (!courseProgram) {
-    throw new Error('CourseProgram not found');
-  }
-  await courseProgram.destroy();
-  return { message: 'CourseProgram deleted successfully' };
+    const course = await courseModels.findByPk(course_id);
+    const program = await programModels.findByPk(program_id);
+
+    if (!course || !program) {
+        throw new Error('Course or Program not found');
+    }
+
+    await course.removeProgram(program);
+    return { message: 'Program removed from course successfully' };
 };
 
 module.exports = {
-  createCourseProgram,
-  getCourseProgramById,
-  getAllCoursePrograms,
-  deleteCourseProgram,
+    createCourseProgram,
+    getCoursePrograms,
+    deleteCourseProgram
 };
