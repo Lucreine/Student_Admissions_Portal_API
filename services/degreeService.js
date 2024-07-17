@@ -27,6 +27,8 @@ const deleteDegree = async (id) => {
     throw new Error('Degree not found');
   }
   await degree.destroy();
+  return { message: 'Degree deleted successfully' };
+
 };
 
 module.exports = {

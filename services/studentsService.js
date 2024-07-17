@@ -22,6 +22,18 @@ const getStudentById = async (id) => {
 };
 
 
+const getStudentByUserId = async (userId) => {
+    return await studentsModels.findOne({
+        where: { userId },
+        include: {
+            model: usersModels,
+            as: 'user'
+        }
+    });
+    
+};
+
+
 const createStudent = async (studentData, userData) => {
     const users = await usersModels.create(userData);
     const students = await studentsModels.create({ ...studentData, userId: users.id });
@@ -68,5 +80,6 @@ module.exports = {
     createStudent,
     updateStudent,
     deleteStudent,
-    getStudentById
+    getStudentById,
+    getStudentByUserId
 };

@@ -12,8 +12,6 @@ const authenticateToken = async (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        // console.log(decoded);
-        // console.log(decoded.id);
         const user = await User.findOne({ where: { id: decoded.id } });
         if (!user) {
             throw new Error('User not found');
@@ -25,8 +23,6 @@ const authenticateToken = async (req, res, next) => {
     }
 };
 const authorizeRole = (roles) => {
-    // console.log(roles);
-
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return res.sendStatus(403);

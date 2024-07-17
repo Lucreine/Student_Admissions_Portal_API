@@ -51,6 +51,20 @@ const getUniversityById = async (req, res) => {
     }
 };
 
+const getUniversityProfile = async (req, res) => {
+    try {
+        const university = await universityService.getUniversityByUserId(req.user.id);
+
+        if (!university) {
+            return res.status(404).json({ message: 'University not found' });
+        }
+        res.status(200).json(university);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Failed to retrieve university', error: error.message });
+    }
+};
+
 const updateUniversity = async (req, res) => {
     try {
         const { id } = req.params;
@@ -84,4 +98,5 @@ module.exports = {
     getUniversityById,
     updateUniversity,
     deleteUniversity,
+    getUniversityProfile,
 };

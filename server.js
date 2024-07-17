@@ -1,6 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const { Sequelize } = require('sequelize');
+// const { Sequelize } = require('sequelize');
 const studentRouter = require('./routers/studentsRouter');
 const universityRouter = require('./routers/universityRouter');
 const authRouter = require("./routers/auth.js");

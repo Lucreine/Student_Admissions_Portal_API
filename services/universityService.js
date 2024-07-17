@@ -20,6 +20,17 @@ const getUniversityById = async (id) => {
     });
 };
 
+const getUniversityByUserId = async (userId) => {
+    return await universityModels.findOne({
+        where: { userId },
+        include: {
+            model: usersModels,
+            as: 'user'
+        }
+    });
+    
+};
+
 const updateUniversity = async (id, universityData, userData) => {
     const university = await universityModels.findByPk(id, {
         include: {
@@ -57,4 +68,5 @@ module.exports = {
     getUniversityById,
     updateUniversity,
     deleteUniversity,
+    getUniversityByUserId
 };
