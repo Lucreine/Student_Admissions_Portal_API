@@ -1,20 +1,21 @@
 const courseStudentService = require('../services/courseStudentService');
 
 const enrollStudentInCourse = async (req, res) => {
-  const { courseId } = req.body;
+  const { course_id } = req.body;
 
   try {
       const date = new Date();
-      const enrollment = await courseStudentService.enrollInCourse(courseId, req.user.id, date);
+      const enrollment = await courseStudentService.enrollStudentInCourse(course_id, req.user.id, date);
       res.status(201).json(enrollment);
   } catch (error) {
       res.status(500).json({ error: error.message });
   }
 };
 
+  
 const getAllCourseEnrollments = async (req, res) => {
   try {
-      const courses = await courseStudentService.getStudentCourses(req.user.id);
+      const courses = await courseStudentService.getAllCourseEnrollments(req.user.id);
       res.status(200).json(courses);
   } catch (error) {
       res.status(500).json({ error: error.message });

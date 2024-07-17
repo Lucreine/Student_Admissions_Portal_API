@@ -5,9 +5,27 @@ const degreeModels = require('../models/degreeModels');
 const programModels = require('../models/programModels');
 
 const createAdmission = async (admissionData, student_id) => {
+  const { university_id, degree_id, program_id } = admissionData;
+
+  const university = await universityModels.findByPk(university_id);
+  if (!university) {
+      throw new Error('University not found');
+  }
+
+  const degree = await degreeModels.findByPk(degree_id);
+  if (!degree) {
+      throw new Error('Degree not found');
+  }
+
+  const program = await programModels.findByPk(program_id);
+  if (!program) {
+      throw new Error('Program not found');
+  }
+
   const admission = await admissionModels.create({ ...admissionData, student_id: student_id });
   return admission;
 };
+
 
 const getAllAdmissions = async () => {
   return await admissionModels.findAll({
