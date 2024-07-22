@@ -1,5 +1,5 @@
 const universityService = require('../services/universityService');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const upload = require('../middleware/upload');
 
 

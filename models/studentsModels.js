@@ -44,7 +44,6 @@ const Student = sequelize.define('Student', {
 }, {
   tableName: 'students',
   timestamps: true,
-  // updatedAt: 'updateTimestamp' 
 });
 
 User.hasOne(Student, {

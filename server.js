@@ -46,14 +46,27 @@ app.use('/api', courseStudentRouter);
 // app.listen(PORT, () => {
 //   console.log(`App started successfully on http://localhost:${PORT}`);
 // });
-sequelize.sync({ force: false })
-  .then(() => {
-    console.log('Base de données synchronisée');
-    
-    app.listen(8000, () => {
-      console.log(`App started successfully on http://localhost:${PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.error('Erreur lors de la synchronisation de la base de données :', err);
+
+sequelize.sync({ force: false }).then(() => {
+  console.log("Database & tables created!");
+
+  app.listen(PORT, () => {
+    console.log(`App started successfully on http://localhost:${PORT}`);
   });
+
+}).catch(err => {
+  console.error('Unable to create tables, shutting down...', err);
+  process.exit(1);
+});
+
+// sequelize.sync({ force: false })
+//   .then(() => {
+//     console.log('Base de données synchronisée');
+    
+//     app.listen(8000, () => {
+//       console.log(`App started successfully on http://localhost:${PORT}`);
+//     });
+//   })
+//   .catch((err) => {
+//     console.error('Erreur lors de la synchronisation de la base de données :', err);
+//   });

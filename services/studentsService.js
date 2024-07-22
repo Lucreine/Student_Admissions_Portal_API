@@ -33,14 +33,11 @@ const getStudentByUserId = async (userId) => {
     
 };
 
-
 const createStudent = async (studentData, userData) => {
     const users = await usersModels.create(userData);
     const students = await studentsModels.create({ ...studentData, userId: users.id });
     return { users, students };
 }
-
-
 
 const updateStudent = async (id, studentData, userData) => {
     const students = await studentsModels.findByPk(id, {

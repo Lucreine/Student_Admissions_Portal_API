@@ -1,5 +1,5 @@
 const studentsService = require('../services/studentsService.js');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -63,6 +63,7 @@ const createStudent = async (req, res) => {
         };
 
         console.log(studentData);
+        console.log(userData);
         const { users, students } = await studentsService.createStudent(studentData, userData);
         res.status(201).json({ message: 'Student registered', users, students });
 
